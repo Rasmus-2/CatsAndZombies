@@ -1,31 +1,34 @@
+const url = "https://api.api-ninjas.com/v1/dadjokes?limit=1"
+const key = "xZG2k6LgkxSVwpbF/E+4Ug==QgOZY1insFiiVzkR"
+
 let map = []
 
 let landscapeImages = [
-    ["landscapes/alps.png",                         "It's very cold and windy, and you have some trouble breathing at this altitude."],
-    ["landscapes/bamboo_bridge.webp",               "As you walk across the bridge it bounces ever so slightly with every step you take."],
-    ["landscapes/city_street.jpg",                  "It's getting late, and the sun is increasingly being replaces by the city lights."],
-    ["landscapes/cliffs.webp",                      "You try to rein in your fear of heights as you carefully look out from the steep cliffs."],
-    ["landscapes/desert.webp",                      "It's warm and dry and you wish you brought another water bottle. Or ten more bottles"],
-    ["landscapes/eiffel_tower.webp",                "The top of the Eiffel tower might be a good spot to look for any cats to save."],
-    ["landscapes/flower_park.webp",                 "It smells lovely as you stroll through the park and the look at the flower beds."],
-    ["landscapes/glacier.webp",                     "The ice creaks underneath your feet and you walk very carefully and very slowly."],
-    ["landscapes/lavender_fields.webp",             "A strong scent of lavendel permeates every inch of these never ending fields."],
-    ["landscapes/london_eye.jpg",                   "Perhaps you can scan the city for dangerous zombies from the top of the London eye."],
-    ["landscapes/old_street.webp",                  "The cobblestone under your feet makes you wish you bought shoes with better soles."],
-    ["landscapes/pedestrian_street.jpg",            "It is a sunny and pleasant day as you stroll through the avenues of the inner city."],
-    ["landscapes/rainforest.webp",                  "There's a lot to take in as you tread through the dense vegetation of the rain forest."],
-    ["landscapes/river_in_front_of_mountain.webp",  "You allow yourself to breath for a second and take in the view as the sun sets."],
-    ["landscapes/rohan_plains.jpg",                 "Endless plains surrounded by mountains, at least you'll spot zombies easily, you hope."],
-    ["landscapes/salt_desert.webp",                 "Barren trees and salty ground, sand dunes in the distance. It's a clear and warm day."],
-    ["landscapes/santorini_city.webp",              "Between the beautiful buildings you search every alley, looking for any signs of cats."],
-    ["landscapes/statue_of_liberty.jpg",            "That looks rather comfortable. You would also like to rest, maybe just for a moment?"],
-    ["landscapes/step_falls.webp",                  "Can you afford a ballon ride, they would offer a great view to spot cats and zombies."],
-    ["landscapes/stone_beach.jpg",                  "You feel a mild breeze over your face as you hear the waves roll in across the beach."],
-    ["landscapes/street_corner.jpeg",               "After a quick cup of coffee you exit the café and look around the street. Where to next?"],
-    ["landscapes/taj_mahal.jpg",                    "Was the meowing you heard from inside the Taj Mahal? Well, you better take a look."],
-    ["landscapes/tree_garden.jpg",                  "As you stroll down the small road you hear rustling through the leaves. Cats or zombies?"],
-    ["landscapes/valley.jpg",                       "Downhill! You can't see where the road takes you, but it's downhill so you trudge on down."],
-    ["landscapes/waterfall.jpg",                    "It's been a long night, but now you can turn your flashlight off and wander in the sunrise."]
+    ["landscapes/alps.png", "It's very cold and windy, and you have some trouble breathing at this altitude."],
+    ["landscapes/bamboo_bridge.webp", "As you walk across the bridge it bounces ever so slightly with every step you take."],
+    ["landscapes/city_street.jpg", "It's getting late, and the sun is increasingly being replaces by the city lights."],
+    ["landscapes/cliffs.webp", "You try to rein in your fear of heights as you carefully look out from the steep cliffs."],
+    ["landscapes/desert.webp", "It's warm and dry and you wish you brought another water bottle. Or ten more bottles"],
+    ["landscapes/eiffel_tower.webp", "The top of the Eiffel tower might be a good spot to look for any cats to save."],
+    ["landscapes/flower_park.webp", "It smells lovely as you stroll through the park and the look at the flower beds."],
+    ["landscapes/glacier.webp", "The ice creaks underneath your feet and you walk very carefully and very slowly."],
+    ["landscapes/lavender_fields.webp", "A strong scent of lavendel permeates every inch of these never ending fields."],
+    ["landscapes/london_eye.jpg", "Perhaps you can scan the city for dangerous zombies from the top of the London eye."],
+    ["landscapes/old_street.webp", "The cobblestone under your feet makes you wish you bought shoes with better soles."],
+    ["landscapes/pedestrian_street.jpg", "It is a sunny and pleasant day as you stroll through the avenues of the inner city."],
+    ["landscapes/rainforest.webp", "There's a lot to take in as you tread through the dense vegetation of the rain forest."],
+    ["landscapes/river_in_front_of_mountain.webp", "You allow yourself to breath for a second and take in the view as the sun sets."],
+    ["landscapes/rohan_plains.jpg", "Endless plains surrounded by mountains, at least you'll spot zombies easily, you hope."],
+    ["landscapes/salt_desert.webp", "Barren trees and salty ground, sand dunes in the distance. It's a clear and warm day."],
+    ["landscapes/santorini_city.webp", "Between the beautiful buildings you search every alley, looking for any signs of cats."],
+    ["landscapes/statue_of_liberty.jpg", "That looks rather comfortable. You would also like to rest, maybe just for a moment?"],
+    ["landscapes/step_falls.webp", "Can you afford a ballon ride, that would offer a great view to spot cats and zombies."],
+    ["landscapes/stone_beach.jpg", "You feel a mild breeze over your face as you hear the waves roll in across the beach."],
+    ["landscapes/street_corner.jpeg", "After a quick cup of coffee you exit the café and look around the street. Where to next?"],
+    ["landscapes/taj_mahal.jpg", "Was the meowing you heard from inside the Taj Mahal? Well, you better take a look."],
+    ["landscapes/tree_garden.jpg", "As you stroll down the small road you hear rustling through the leaves. Cats or zombies?"],
+    ["landscapes/valley.jpg", "Downhill! You can't see where the road takes you, but it's downhill so you trudge on down."],
+    ["landscapes/waterfall.jpg", "It's been a long night, but now you can turn your flashlight off and wander in the sunrise."]
 ]
 
 mixLandscapes()
@@ -102,53 +105,73 @@ buildMap(rows, cols)
 
 drawLives()
 
+getJoke()
 
-function catNoises(){
+
+function getJoke() {
+    fetch(url, {
+        headers: { 'X-Api-Key': key }
+    })
+        .then(function (response) { return response.json() })
+        .then(function (data) {
+            data.map(function (d) {
+                let p = document.createElement("p")
+                p.setAttribute("id", "quoteparagraph")
+                p.innerHTML = d.joke
+                document.getElementById("quotesdiv").innerHTML = ""
+                document.getElementById("quotesdiv").appendChild(p)
+            })
+
+        })
+        .catch(function (error) {
+            console.log("Something went wrong: " + error)
+        })
+}
+
+function catNoises() {
     let noise = []
-    if(playerX < catX){
+    if (playerX < catX) {
         noise.appendChild("east")
     }
-    if(playerX > catX){
+    if (playerX > catX) {
         noise.appendChild("west")
     }
-    if(playerY < catY){
+    if (playerY < catY) {
         noise.appendChild("south")
     }
-    if(playerY > catY){
+    if (playerY > catY) {
         noise.appendChild("north")
     }
-    
-    if (noise.length == 1)
-    {
-        
-    }
-    else if(noise.length == 2)
-    {
+
+    if (noise.length == 1) {
 
     }
-    else{
+    else if (noise.length == 2) {
+
+    }
+    else {
 
     }
 }
 
-function mixLandscapes(){
+function mixLandscapes() {
     let currentIndex = landscapeImages.length
-    while(currentIndex != 0){
+    while (currentIndex != 0) {
         let randomIndex = Math.floor(Math.random() * currentIndex)
         currentIndex--
 
-        [landscapeImages[currentIndex], landscapeImages[randomIndex]] = 
-        [landscapeImages[randomIndex], landscapeImages[currentIndex]];
+        [landscapeImages[currentIndex], landscapeImages[randomIndex]] =
+            [landscapeImages[randomIndex], landscapeImages[currentIndex]];
     }
 }
 
-function drawLives(){
+function drawLives() {
     let currentLives = document.getElementById("lives")
-    while (currentLives.firstChild){
+    while (currentLives.firstChild) {
         currentLives.removeChild(currentLives.lastChild)
     }
 
-    for(let i = 0; i < lives; i++){
+    for (let i = 0; i < lives; i++) {
         let newImage = document.createElement("img")
         newImage.src = "images/heart.webp"
         newImage.id = "heartimage"
@@ -180,6 +203,7 @@ function gameOver() {
 }
 
 function respawnCat() {
+    getJoke()
     catX = Math.floor(Math.random() * (cols - 1)) + 1
     catY = Math.floor(Math.random() * (rows - 1)) + 1
 
